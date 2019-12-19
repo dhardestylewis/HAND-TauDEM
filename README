@@ -1,0 +1,54 @@
+hand-v2.sh
+Daniel Hardesty Lewis
+
+The Height Above Nearest Drainage algorithm calculates the vertical distance
+   from a given pixel to its nearest drainage pixel.
+
+The HAND script is run as:
+hand-v2.sh <DEM_raster.input> <HAND_raster.output>
+
+For example:
+hand-v2.sh DEM.tif DEMdd.tif
+
+Currently, every script must be placed in the same working directory as the
+   input data to work correctly. This means that hand-v2.sh must be in the
+   same directory as the following scripts to function:
+   - hand-heads.py
+   - hand-threshmax.py
+   - hand-threshmin.py
+   - hand-thresh.py
+   - hand-weights.py
+
+We also provide the following Python3 scripts for pre-processing and
+   visualisation:
+   - hand-buffer.py to create a DEM raster buffered by 100m for a basin
+   - hand-vis.py to represent a HAND raster as GeoJSON and shapefile
+
+Several basins of data are included here:
+   in Texas:
+      - Travis County by compositing HUC12s derived from HUC6s 120902 & 120903
+   in Oromia, Ethiopia:
+      - Awash
+      - Baro
+      - Ganale
+      - Guder
+      - Muger
+      - Shebelle
+
+For each of these basins, we provide the following files:
+   as input:
+      - a buffered DEM raster (ex *buf.tif or *buffer.tif)
+   as output:
+      - a HAND raster (*dd.tif)
+   as visualisation output:
+      - a GeoJSON (*dd.json)
+      - a shapefile (all of: *dd.cpg, *dd.dbf, *dd.prj, *dd.shp, *dd.shx)
+   as pre-processing input:
+      - a buffered basin shapefile (*buffer.shp, etc)
+   as deprecated input:
+      - flowlines for hand-v1.sh (*_links.shp, etc)
+   as deprecated visualisation output:
+      - initial HAND representations with unusual binning (*dd.png)
+
+The vertical unit for all of these data is meters (m).
+

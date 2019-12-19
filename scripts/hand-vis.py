@@ -76,21 +76,31 @@ def main():
     shp_schema = {
         'geometry': 'MultiPolygon',
         'properties': {
-            'pixelvalue': 'float'
+            'mean': 'float',
+            'bin_left': 'float',
+            'bin_right': 'float'
         }
     }
     vecshp = fiona.open(options.shapefile,'w','ESRI Shapefile', shp_schema, basindd.crs.to_string())
     vecjsn = fiona.open(options.geojson,'w','GeoJSON', shp_schema, basindd.crs.to_string())
-    for pixel_value in unique_values:
+    for i,pixel_value in enumerate(unique_values):
         polygons = [shape(geom) for geom,value in shapes if value==pixel_value]
         multipolygon = MultiPolygon(polygons)
         vecshp.write({
             'geometry': mapping(multipolygon),
-            'properties': {'pixelvalue':float(pixel_value)}
+            'properties': {
+                'mean':float(pixel_value),
+                'bin_left': float(basinddmasortbins[i]),
+                'bin_right': float(basinddmasortbins[i+1])
+            }
         })
         vecjsn.write({
             'geometry': mapping(multipolygon),
-            'properties': {'pixelvalue':float(pixel_value)}
+            'properties': {
+                'mean':float(pixel_value),
+                'bin_left': float(basinddmasortbins[i]),
+                'bin_right': float(basinddmasortbins[i+1])
+            }
         })
     vecshp.close()
     vecjsn.close()

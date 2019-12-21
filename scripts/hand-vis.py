@@ -17,6 +17,7 @@ def argparser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-d", "--dd", type=str, help="")
+    parser.add_argument("-b", "--binmethod", type=str, help="")
 #    parser.add_argument("-c", "--cmap", type=str, help="")
 #    parser.add_argument("-b", "--bins", type=int, help="")
     parser.add_argument("-s", "--shapefile", type=str, help="")
@@ -26,6 +27,8 @@ def argparser():
 
     if not args.dd:
         parser.error('-d --dd Distance down raster')
+    if not args.binmethod:
+        parser.error('-b --binmethod Binning method')
 #    if not args.cmap:
 #        parser.error('-c --cmap Name of Matplotlib colormap')
 #    if not args.bins:
@@ -46,10 +49,33 @@ def main():
     #basinddmasort = np.sort(ma.array(basinddma.data,mask=((basinddma.mask)|(basinddma.data==0.))).compressed())
     basinddmasort = np.sort(basinddma.filled(fill_value=-1.).flatten())
 #    nbins=options.bins
-    basinddmasortbins = np.logspace(-1,3,10)[:7]
-    basinddmasortbins[len(basinddmasortbins)-1] = basinddmasort.max()
     basinddmasortbinsnodata = -1.
-    basinddmasortbins = np.insert(basinddmasortbins,0,[basinddmasortbinsnodata,0.])
+    binning = options.binmethod.split(" ")
+    if binning[0] == 'lin':
+        if len(binning)>1:
+            basinddmasortbins = np.linspace(
+                float(binning[1]),
+                float(binning[2]),
+                int(binning[3])
+            )
+        else:
+            basinddmasortbins = np.linspace(0.,1.5*5.,6)
+        basinddmasortbins = np.insert(basinddmasortbins,0,[basinddmasortbinsnodata])
+        basinddmasortbins = np.append(basinddmasortbins,basinddmasort.max())
+    elif binning[0] == 'log':
+        if len(binning)>1:
+            basinddmasortbins = np.logspace(
+                float(binning[1]),
+                float(binning[2]),
+                int(binning[3])
+            )[:int(binning[4])]
+        else:
+            basinddmasortbins = np.logspace(-1,3,10)[:7]
+        basinddmasortbins = np.insert(basinddmasortbins,0,[basinddmasortbinsnodata,0.])
+        basinddmasortbins = np.append(basinddmasortbins,basinddmasort.max())
+    #basinddmasortbins = np.logspace(-1,3,10)[:7]
+    #basinddmasortbins[len(basinddmasortbins)-1] = basinddmasort.max()
+    #basinddmasortbins = np.insert(basinddmasortbins,0,[basinddmasortbinsnodata,0.])
     nbins = len(basinddmasortbins)-1
 #    basinddmasortbins = np.zeros(nbins+1)
 #    basinddmasortbins[0] = basinddmasort.min()
@@ -83,7 +109,7 @@ def main():
     }
     vecshp = fiona.open(options.shapefile,'w','ESRI Shapefile', shp_schema, basindd.crs.to_string())
     vecjsn = fiona.open(options.geojson,'w','GeoJSON', shp_schema, basindd.crs.to_string())
-    for i,pixel_value in enumerate(unique_values):
+    for pixel_value in unique_values:
         polygons = [shape(geom) for geom,value in shapes if value==pixel_value]
         multipolygon = MultiPolygon(polygons)
         vecshp.write({

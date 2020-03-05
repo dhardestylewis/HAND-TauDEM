@@ -38,21 +38,22 @@ def main():
 
     heads = gpd.read_file(options.shapefile)
 
-    rst = rio.open(options.template)
-    meta = rst.meta.copy()
+    with rio.open(options.template) as rst:
+        meta = rst.meta.copy()
     meta.update(compress='lzw')
-    out = rio.open(options.output,'w+',**meta)
 
-    out_arr = out.read(1)
+    with rio.open(options.output,'w+',**meta) as out:
 
-    heads['value'] = 0.0
+        out_arr = out.read(1)
 
-    outma = ma.array(out_arr,mask=(rst.read().squeeze()==meta['nodata']))
-    outma.data[outma==meta['nodata']] = 1.0
+        heads['value'] = 0.0
 
-    shapes = ((geom,value) for geom,value in zip(heads.geometry,heads.value))
-    burned = features.rasterize(shapes=shapes,fill=0,out=outma.data,transform=out.transform)
-    out.write_band(1,burned)
+        outma = ma.array(out_arr,mask=(rst.read().squeeze()==meta['nodata']))
+        outma.data[outma==meta['nodata']] = 1.0
+
+        shapes = ((geom,value) for geom,value in zip(heads.geometry,heads.value))
+        burned = features.rasterize(shapes=shapes,fill=0.0,out=outma.data,transform=out.transform)
+        out.write_band(1,burned)
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,20 @@
-hand-v2.sh
+Command list
+---------
+hand-2.1.0.sh      Workflow of all provided Python scripts as Bash script
+hand-buffer.py     Buffer all polygons within a shapefile by 100m
+hand-thresh.py     Determine resolution-appropriate binary stream threshold
+hand-heads.py      Identify channel heads from stream network
+hand-weights.py    Rasterize channel head locations
+hand-threshmin.py  Determine resolution-appropriate min for drop analysis
+hand-threshmax.py  Extract max possible search for drop analysis
+hand-vis.py        
+
+Author
+------
 Daniel Hardesty Lewis
 
+Description
+-----------
 The Height Above Nearest Drainage algorithm calculates the vertical distance
    from a given pixel to its nearest drainage pixel.
 
@@ -51,4 +65,3 @@ For each of these basins, we provide the following files:
       - initial HAND representations with unusual binning (*dd.png)
 
 The vertical unit for all of these data is meters (m).
-

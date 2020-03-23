@@ -4,6 +4,7 @@
 import argparse
 import numpy as np
 import numpy.ma as ma
+import pandas as pd
 import rasterio
 import rasterio.features
 from shapely.geometry import shape, mapping
@@ -58,22 +59,19 @@ def digi(nodata,raster):
             binning[0] = np.linspace
             bins = np_space()
         else:
-            bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
+            bins = np.linspace(0.,1.*20.,num=21,dtype=np.float)
     elif binning[0] == 'log':
         if len(binning)>1:    
             binning[0] = np.logspace
             bins = np_space()
         else:
-            bins = np.logspace(np.log10(1./3.28084),np.log10(20./3.28084),num=20,dtype=np.float)
+            bins = np.logspace(np.log10(1.),np.log10(20.),num=20,dtype=np.float)
         bins = np.insert(bins,0,[0.])
     bins = np.append(bins,nodata)
-    print(bins)
 
     digi = np.digitize(raster.filled(fill_value=int(nodata)),bins,right=True)
     digi = digi.squeeze().astype(np.uint16)
     digi[digi==21] = int(nodata)
-    print(digi)
-    print(np.unique(digi))
 
     return(bins, digi)
 
@@ -87,16 +85,15 @@ def output_raster(profile,nodata,digi):
         compress='lzw',
         nodata=int(nodata)
     )
-    print(profile)
 
     with rasterio.open(args.raster, 'w', **profile) as dst:
         dst.write(digi.astype(rasterio.uint16), 1)
 
 def output_vector(crs,digi,transform,bins):
 
-    def fiona_open():
+    def fiona_open(vecfile):
         vec = fiona.open(
-            args.shapefile,
+            vecfile,
             'w',
             driver,
             shp_schema,
@@ -107,16 +104,22 @@ def output_vector(crs,digi,transform,bins):
     def vec_for():
     
         def vec_write(vecvec):
+            print({
+                'properties': {
+                    'bin_left': bin_left,
+                    'bin_right': bin_right
+                }
+            })
             vecvec.write({
                 'geometry': multipolygon,
                 'properties': {
                     'bin_left': bin_left,
-                    'bin_right': bin_left
+                    'bin_right': bin_right
                 }
             })
     
-        for i,pixel_value in enumerate(uniq_val_subset):
-            polygons = [shape(geom) for geom,value in shapes if value==pixel_value]
+        for i,pixel_value in uniq_val_subset.iterrows():
+            polygons = [shape(geom) for geom,value in shapes if value==pixel_value[0]]
             multipolygon = mapping(MultiPolygon(polygons))
             bin_left = bins[i-di]
             bin_right = bins[i]
@@ -136,25 +139,25 @@ def output_vector(crs,digi,transform,bins):
     vec = {}
     if args.shapefile:
         driver = 'ESRI Shapefile'
-        vec[driver] = fiona_open()
+        vec[driver] = fiona_open(args.shapefile)
     if args.geojson:
         driver = 'GeoJSON'
-        vec[driver] = fiona_open()
+        vec[driver] = fiona_open(args.geojson)
 
     shapes = list(rasterio.features.shapes(digi,transform=transform))
-    uniq_val = np.unique(digi)
+    uniq_val = pd.DataFrame(np.unique(digi))
 
     uniq_val_subset = uniq_val[:1]
     di = 0
     vec_for()
 
-    uniq_val_subset = uniq_val[2:-1]
+    uniq_val_subset = uniq_val[1:-1]
     di = 1
     vec_for()
 
-    uniq_val_subset = uniq_val[-1:]
-    di = 0
-    vec_for()
+    #uniq_val_subset = uniq_val[-1:]
+    #di = 0
+    #vec_for()
 
     if args.shapefile:
         vec['ESRI Shapefile'].close()
@@ -187,9 +190,7 @@ def main():
         profile = src.profile
         crs = src.crs.to_string()
         transform = src.transform
-        raster = ma.array(src.read(),mask=(src.read()==src.nodata))
-    print(raster)
-    print(np.unique(raster))
+        raster = ma.array(src.read()*3.28084,mask=(src.read()==src.nodata))
 
     nodata = 65535.
 

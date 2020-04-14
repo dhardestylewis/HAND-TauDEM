@@ -71,7 +71,10 @@ def digi(nodata,raster):
 
     digi = np.digitize(raster.filled(fill_value=int(nodata)),bins,right=True)
     digi = digi.squeeze().astype(np.uint16)
-    digi[digi==21] = int(nodata)
+    if len(binning)>1:
+        digi[digi==int(binning[3])] = int(nodata)
+    else:
+        digi[digi==21] = int(nodata)
 
     return(bins, digi)
 

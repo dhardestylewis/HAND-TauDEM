@@ -40,6 +40,7 @@ def main():
 
     with rio.open(options.template) as rst:
         meta = rst.meta.copy()
+        mask = (rst.read().squeeze()==meta['nodata'])
     meta.update(compress='lzw')
 
     with rio.open(options.output,'w+',**meta) as out:
@@ -48,7 +49,7 @@ def main():
 
         heads['value'] = 0.0
 
-        outma = ma.array(out_arr,mask=(rst.read().squeeze()==meta['nodata']))
+        outma = ma.array(out_arr,mask=mask)
         outma.data[outma==meta['nodata']] = 1.0
 
         shapes = ((geom,value) for geom,value in zip(heads.geometry,heads.value))

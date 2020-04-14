@@ -7,7 +7,7 @@ hand-heads.py      Identify channel heads from stream network
 hand-weights.py    Rasterize channel head locations
 hand-threshmin.py  Determine resolution-appropriate min for drop analysis
 hand-threshmax.py  Extract max possible search for drop analysis
-hand-vis.py        
+hand-vis.py        Discretize HAND data into outputs for visualization
 
 Author
 ------
@@ -19,10 +19,10 @@ The Height Above Nearest Drainage algorithm calculates the vertical distance
    from a given pixel to its nearest drainage pixel.
 
 The HAND script is run as:
-hand-v2.sh <DEM_raster.input> <HAND_raster.output>
+hand-v2.sh <DEM_raster.tif> <HAND_raster.tif> <HAND_raster_vis.tif> <HAND_shapefile_vis.shp> <HAND_geojson_vis.json>
 
 For example:
-hand-v2.sh DEM.tif DEMdd.tif
+hand-v2.sh DEM.tif DEMdd.tif DEMddVis.tif DEMddVis.shp DEMddJson.json
 
 Currently, every script must be placed in the same working directory as the
    input data to work correctly. This means that hand-v2.sh must be in the
@@ -32,11 +32,12 @@ Currently, every script must be placed in the same working directory as the
    - hand-threshmin.py
    - hand-thresh.py
    - hand-weights.py
+   - hand-vis.py
 
 We also provide the following Python3 scripts for pre-processing and
    visualisation:
    - hand-buffer.py to create a DEM raster buffered by 100m for a basin
-   - hand-vis.py to represent a HAND raster as GeoJSON and shapefile
+   - hand-vis.py to represent HAND as GeoJSON, shapefile, or raster
 
 Several basins of data are included here:
    in Texas:

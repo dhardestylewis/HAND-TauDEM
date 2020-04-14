@@ -27,3 +27,5 @@ dropanalysis -ad8 demad8.tif -p demp.tif -fel demfel.tif -ssa demssa.tif -o outl
 threshold -ssa demssa.tif -src demsrc.tif -thresh $(tail -n 1 demdrp.txt | awk '{print $NF}')
 
 dinfdistdown -ang demang.tif -fel demfel.tif -src demsrc.tif -wg demwg.tif -dd $2 -m ave v -nc
+
+python3 hand-vis.py --input $2 --binmethod 'lin' --raster $3 --shapefile $4 --geojson $5

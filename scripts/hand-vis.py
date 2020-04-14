@@ -19,10 +19,9 @@ def argparser():
 
     parser.add_argument("-i", "--input", type=str, help="")
     parser.add_argument("-b", "--binmethod", type=str, help="")
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-r", "--raster", type=str, help="")
-    group.add_argument("-s", "--shapefile", type=str, help="")
-    group.add_argument("-g", "--geojson", type=str, help="")
+    parser.add_argument("-r", "--raster", type=str, help="")
+    parser.add_argument("-s", "--shapefile", type=str, help="")
+    parser.add_argument("-g", "--geojson", type=str, help="")
 #    parser.add_argument("-c", "--cmap", type=str, help="")
 
     args = parser.parse_args()
@@ -31,7 +30,7 @@ def argparser():
         parser.error('-r --raster Distance down raster')
     if not args.binmethod:
         parser.error('-b --binmethod Binning method')
-    if not args.raster and not args.shapefile and not args.geojson:
+    if not (args.raster or args.shapefile or args.geojson):
         parser.error('-r --raster OR -s --shapefile OR -g --geojson output req')
 #    if not args.shapefile:
 #        parser.error('-s --shapefile Output shapefile of distance down')

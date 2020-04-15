@@ -27,7 +27,7 @@ def argparser():
     args = parser.parse_args()
 
     if not args.input:
-        parser.error('-r --raster Distance down raster')
+        parser.error('-i --input Distance down raster input missing')
     if not args.binmethod:
         parser.error('-b --binmethod Binning method')
     if not (args.raster or args.shapefile or args.geojson):

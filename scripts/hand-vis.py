@@ -31,10 +31,6 @@ def argparser():
 
     if not args.input:
         parser.error('-r --raster Distance down raster')
-    if not args.binmethod:
-        parser.error('-b --binmethod Binning method')
-    if not args.crs:
-        parser.error('-c --crs Output coordinate reference system (CRS)')
     if not (args.raster or args.shapefile or args.geojson):
         parser.error('-r --raster OR -s --shapefile OR -g --geojson output req')
 #    if not args.shapefile:
@@ -57,26 +53,32 @@ def digi(nodata,raster):
         )
         return(bins)
     
-    binning = args.binmethod.split(" ")
-    if binning[0] == 'lin':
-        if len(binning)>1:
-            binning[0] = np.linspace
-            bins = np_space()
-        else:
-            bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
-    elif binning[0] == 'log':
-        if len(binning)>1:    
-            binning[0] = np.logspace
-            bins = np_space()
-        else:
-            bins = np.logspace(np.log10(1./3.28084),np.log10(20./3.28084),num=20,dtype=np.float)
-        bins = np.insert(bins,0,[0.])
+    if args.binmethod:
+        binning = args.binmethod.split(" ")
+        if binning[0] == 'lin':
+            if len(binning)>1:
+                binning[0] = np.linspace
+                bins = np_space()
+            else:
+                bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
+        elif binning[0] == 'log':
+            if len(binning)>1:    
+                binning[0] = np.logspace
+                bins = np_space()
+            else:
+                bins = np.logspace(np.log10(1./3.28084),np.log10(20./3.28084),num=20,dtype=np.float)
+            bins = np.insert(bins,0,[0.])
+    else:
+        bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
     bins = np.append(bins,float(nodata))
 
     digi = np.digitize(raster.filled(fill_value=nodata),bins,right=True)
     digi = digi.squeeze().astype(np.uint16)
-    if len(binning)>1:
-        digi[digi==int(binning[3])] = nodata
+    if args.binmethod:
+        if len(binning)>1:
+            digi[digi==int(binning[3])] = nodata
+        else:
+            digi[digi==21] = nodata
     else:
         digi[digi==21] = nodata
 
@@ -186,7 +188,10 @@ def main():
 
     args = argparser()
 
-    dst_crs = 'EPSG:'+str(args.crs)
+    if args.crs:
+        dst_crs = 'EPSG:'+str(args.crs)
+    else:
+        dst_crs = 'EPSG:3857'
 
     with rasterio.open(args.input) as src:
         transformation, width, height = calculate_default_transform(

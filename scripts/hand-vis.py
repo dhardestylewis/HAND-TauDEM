@@ -4,12 +4,14 @@
 import argparse
 import numpy as np
 import numpy.ma as ma
-import pandas as pd
 import rasterio
 import rasterio.features
+from rasterio.warp import calculate_default_transform, reproject, Resampling
 from shapely.geometry import shape, mapping
 from shapely.geometry.multipolygon import MultiPolygon
+from shapely.ops import transform
 import fiona
+from functools import partial
 #import matplotlib as mpl
 #import matplotlib.pyplot as plt
 
@@ -19,6 +21,7 @@ def argparser():
 
     parser.add_argument("-i", "--input", type=str, help="")
     parser.add_argument("-b", "--binmethod", type=str, help="")
+    parser.add_argument("-c", "--crs", type=int, help="")
     parser.add_argument("-r", "--raster", type=str, help="")
     parser.add_argument("-s", "--shapefile", type=str, help="")
     parser.add_argument("-g", "--geojson", type=str, help="")
@@ -27,9 +30,11 @@ def argparser():
     args = parser.parse_args()
 
     if not args.input:
-        parser.error('-i --input Distance down raster input missing')
+        parser.error('-r --raster Distance down raster')
     if not args.binmethod:
         parser.error('-b --binmethod Binning method')
+    if not args.crs:
+        parser.error('-c --crs Output coordinate reference system (CRS)')
     if not (args.raster or args.shapefile or args.geojson):
         parser.error('-r --raster OR -s --shapefile OR -g --geojson output req')
 #    if not args.shapefile:
@@ -58,60 +63,57 @@ def digi(nodata,raster):
             binning[0] = np.linspace
             bins = np_space()
         else:
-            bins = np.linspace(0.,1.*20.,num=21,dtype=np.float)
+            bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
     elif binning[0] == 'log':
         if len(binning)>1:    
             binning[0] = np.logspace
             bins = np_space()
         else:
-            bins = np.logspace(np.log10(1.),np.log10(20.),num=20,dtype=np.float)
+            bins = np.logspace(np.log10(1./3.28084),np.log10(20./3.28084),num=20,dtype=np.float)
         bins = np.insert(bins,0,[0.])
-    bins = np.append(bins,nodata)
+    bins = np.append(bins,float(nodata))
 
-    digi = np.digitize(raster.filled(fill_value=int(nodata)),bins,right=True)
+    digi = np.digitize(raster.filled(fill_value=nodata),bins,right=True)
     digi = digi.squeeze().astype(np.uint16)
     if len(binning)>1:
-        digi[digi==int(binning[3])] = int(nodata)
+        digi[digi==int(binning[3])] = nodata
     else:
-        digi[digi==21] = int(nodata)
+        digi[digi==21] = nodata
 
     return(bins, digi)
 
-# TODO: Output digi as raster
-def output_raster(profile,nodata,digi):
+def output_raster(profile,nodata,width,height,dst_crs,transformation,digi):
 
     ## 1 band, smallest necessary dtype, LZW compression
-    profile.update(
-        dtype=rasterio.uint16,
-        count=1,
-        compress='lzw',
-        nodata=int(nodata)
-    )
+    profile.update({
+        'dtype':rasterio.uint16,
+        'nodata':nodata,
+        'width':width,
+        'height':height,
+        'count':1,
+        'crs':dst_crs,
+        'transform':transformation,
+        'compress':'lzw'
+    })
 
     with rasterio.open(args.raster, 'w', **profile) as dst:
         dst.write(digi.astype(rasterio.uint16), 1)
 
-def output_vector(crs,digi,transform,bins):
+def output_vector(src_crs,dst_crs,digi,transformation,bins):
 
-    def fiona_open(vecfile):
+    def fiona_open(vectorfile):
         vec = fiona.open(
-            vecfile,
+            vectorfile,
             'w',
             driver,
             shp_schema,
-            crs
+            dst_crs
         )
         return(vec)
 
     def vec_for():
     
         def vec_write(vecvec):
-            print({
-                'properties': {
-                    'bin_left': bin_left,
-                    'bin_right': bin_right
-                }
-            })
             vecvec.write({
                 'geometry': multipolygon,
                 'properties': {
@@ -120,11 +122,11 @@ def output_vector(crs,digi,transform,bins):
                 }
             })
     
-        for i,pixel_value in uniq_val_subset.iterrows():
-            polygons = [shape(geom) for geom,value in shapes if value==pixel_value[0]]
+        for i,pixel_value in enumerate(uniq_val_subset):
+            polygons = [shape(geom) for geom,value in shapes if value==pixel_value]
             multipolygon = mapping(MultiPolygon(polygons))
-            bin_left = bins[i-di]
-            bin_right = bins[i]
+            bin_left = bins[pixel_value-di]*3.28084
+            bin_right = bins[pixel_value]*3.28084
             if args.shapefile:
                 vec_write(vec['ESRI Shapefile'])
             if args.geojson:
@@ -146,8 +148,8 @@ def output_vector(crs,digi,transform,bins):
         driver = 'GeoJSON'
         vec[driver] = fiona_open(args.geojson)
 
-    shapes = list(rasterio.features.shapes(digi,transform=transform))
-    uniq_val = pd.DataFrame(np.unique(digi))
+    shapes = list(rasterio.features.shapes(digi,transform=transformation))
+    uniq_val = np.unique(digi)
 
     uniq_val_subset = uniq_val[:1]
     di = 0
@@ -156,10 +158,6 @@ def output_vector(crs,digi,transform,bins):
     uniq_val_subset = uniq_val[1:-1]
     di = 1
     vec_for()
-
-    #uniq_val_subset = uniq_val[-1:]
-    #di = 0
-    #vec_for()
 
     if args.shapefile:
         vec['ESRI Shapefile'].close()
@@ -188,20 +186,39 @@ def main():
 
     args = argparser()
 
-    with rasterio.open(args.input) as src:
-        profile = src.profile
-        crs = src.crs.to_string()
-        transform = src.transform
-        raster = ma.array(src.read()*3.28084,mask=(src.read()==src.nodata))
+    dst_crs = 'EPSG:'+str(args.crs)
 
-    nodata = 65535.
+    with rasterio.open(args.input) as src:
+        transformation, width, height = calculate_default_transform(
+            src.crs, dst_crs, src.width, src.height, *src.bounds)
+        kwargs = src.meta.copy()
+        kwargs.update({
+            'crs': dst_crs,
+            'transform': transformation,
+            'width': width,
+            'height': height
+        })
+        destination = np.zeros((height,width))
+        reproject(
+            src.read(),
+            destination,
+            src_transform=src.transform,
+            src_crs=src.crs,
+            dst_transform=transformation,
+            dst_crs=dst_crs,
+            resampling=Resampling.nearest)
+        profile = src.profile
+        src_crs = src.crs.to_string()
+        raster = ma.array(destination,mask=(destination==src.nodata))
+
+    nodata = np.iinfo(np.uint16).max
 
     binned, digitised = digi(nodata,raster)
 
     if args.raster:
-        output_raster(profile,nodata,digitised)
+        output_raster(profile,nodata,width,height,dst_crs,transformation,digitised)
     if args.shapefile or args.geojson:
-        output_vector(crs,digitised,transform,binned)
+        output_vector(src_crs,dst_crs,digitised,transformation,binned)
 
 if __name__ == "__main__":
     main()

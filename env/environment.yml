@@ -1,0 +1,14 @@
+name: hand-taudem
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - geopandas
+  - fiona
+  - python
+  - rasterio
+  - numpy
+  - matplotlib
+  - shapely
+prefix: /home/dhl/anaconda3/envs/hand-taudem
+

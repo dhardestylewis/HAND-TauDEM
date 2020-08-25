@@ -5,4 +5,3 @@ dependencies:
   - rasterio
   - geopandas
   - numpy
-prefix: /work/04950/dhl/stampede2/miniconda3/envs/hand-rasterio

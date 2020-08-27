@@ -1,0 +1,5 @@
+name: hand-libgdal
+channels:
+  - defaults
+dependencies:
+  - libgdal

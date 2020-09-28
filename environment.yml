@@ -10,5 +10,4 @@ dependencies:
   - numpy
   - matplotlib
   - shapely
-prefix: /home/dhl/anaconda3/envs/hand-taudem
 

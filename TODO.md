@@ -7,6 +7,10 @@ File template shamelessly stolen from [todo.md](https://raw.githubusercontent.co
 - [ ] User's & developer's documentation
 - [ ] Dev's doc: Example usage of Singularity/Docker in conjunction with main script
 - [ ] TauDEM bug report for ConnectDown function - LOW PRIORITY
+- [ ] Task processor log updates:
+- [ ]    . time differences between steps, as a separate type of elapsed times
+- [ ]    . HUC12 identifier, even if "repetitious"
+- [ ]    . better descriptor of task initiated
 
 ### In Progress
 

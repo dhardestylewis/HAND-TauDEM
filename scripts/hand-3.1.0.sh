@@ -18,57 +18,86 @@
 ## TODO: Memory tests with parallelization
 
 
-## POSIX variable reset in case getopts was used previously in this same shell
-OPTIND=1
+### POSIX variable reset in case getopts was used previously in this same shell
+#OPTIND=1
+#
+### Default behaviour
+#output_file=""
+#verbose=false
+#jobno=1
+#
+### Support long options
+#for arg in "$@"; do
+#    shift
+#    case "$arg" in
+#        "--help")
+#            set -- "$@" "-h"
+#            ;;
+#        "--verbose")
+#            set -- "$@" "-v"
+#            ;;
+#        "--jobs")
+#            set -- "$@" "-j"
+#            ;;
+#        "--output_file")
+#            set -- "$@" "-f"
+#            ;;
+#        *)
+#            set -- "$@" "$arg"
+#            ;;
+#    esac
+#done
+#
+#while getopts "h?jvf:" opt; do
+#    case "$opt" in
+#        h|\?)
+#            show_help
+#            exit 0
+#            ;;
+#        v)  verbose=true
+#            ;;
+#        j)  jobno=$(($OPTARG))
+#            ;;
+#        f)  output_file=$OPTARG
+#            ;;
+#    esac
+#done
+#
+#shift $((OPTIND-1))
+#
+#[ "${1:-}" = "--" ] && shift
+#
+#echo "verbose=$verbose, output_file='$output_file', Leftovers: $@"
 
-## Default behaviour
-output_file=""
-verbose=false
-jobno=1
+TEMP=$(getopt \
+    -o vdj: \
+    --long verbose,debug,job:,debugfile:,outputfile: \
+    -- "$@")
 
-## Support long options
-for arg in "$@"; do
+if [ $? != 0 ]; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+eval set -- "$TEMP"
+
+VERBOSE=false
+DEBUG=false
+DEBUGFILE=
+OUTPUTFILE=
+JOBS=1
+while true; do
+    echo "$TEMP"
+    case "$1" in
+        -- ) shift ; break ;;
+        -v | --verbose ) VERBOSE=true; shift ;;
+        -d | --debug ) DEBUG=true; shift ;;
+        -j | --job ) JOBS="$2"; shift ;;
+        --debugfile ) DEBUGFILE="$2"; shift ;;
+        --outputfile ) OUTPUTFILE="$2"; shift ;;
+        * ) ARG="$@"; shift ; break ;;
+    esac
     shift
-    case "$arg" in
-        "--help")
-            set -- "$@" "-h"
-            ;;
-        "--verbose")
-            set -- "$@" "-v"
-            ;;
-        "--jobs")
-            set -- "$@" "-j"
-            ;;
-        "--output_file")
-            set -- "$@" "-f"
-            ;;
-        *)
-            set -- "$@" "$arg"
-            ;;
-    esac
 done
-
-while getopts "h?vf:" opt; do
-    case "$opt" in
-        h|\?)
-            show_help
-            exit 0
-            ;;
-        v)  verbose=true
-            ;;
-        j)  jobno=$OPTARG
-            ;;
-        f)  output_file=$OPTARG
-            ;;
-    esac
-done
-
-shift $((OPTIND-1))
-
-[ "${1:-}" = "--" ] && shift
-
-echo "verbose=$verbose, output_file='$output_file', Leftovers: $@"
-
+echo JOBS="$JOBS"
+echo "$@"
 
 RUN_COMMANDS() {
 
@@ -98,6 +127,9 @@ RUN_COMMANDS() {
         fi
     fi
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
+
+    echo $(pwd)
+    echo $(basename -- "$1")
     
     pitremove -z $(basename -- "$1") -fel demfel.tif
     dinfflowdir -fel demfel.tif -ang demang.tif -slp demslp.tif
@@ -171,15 +203,15 @@ if [[ -z "${PYTHON_HAND}" ]]; then
 fi
 
 NPROC=$(($(grep -c ^processor /proc/cpuinfo) - 1))
-if [ "$jobno" -gt "$NPROC" ]; then
-    jobno="$NPROC"
+if [ $JOBS -gt $NPROC ]; then
+    JOBS=$NPROC
 fi
-if [ "$jobno" -eq 1 ]; then
+if [ $JOBS -eq 1 ]; then
     for arg in "$@"; do
         shift
         RUN_COMMANDS "$arg"
     done
 else
-    parallel --will-cite -j "$jobno" -k --ungroup RUN_COMMANDS ::: "$@"
+    parallel --will-cite -j $JOBS -k --ungroup RUN_COMMANDS ::: "$@"
 fi
 

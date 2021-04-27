@@ -1,0 +1,203 @@
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 2 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+All slopes evaluated. 18377 flats to resolve.
+Draining flats towards lower adjacent terrain
+.................................................................................................................................
+Draining flats away from higher adjacent terrain
+.................
+Setting directions
+Iteration complete. Number of flats remaining: 450
+Draining flats towards lower adjacent terrain
+.........
+Draining flats away from higher adjacent terrain
+...
+Setting directions
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 2 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+All slopes evaluated. 18377 flats to resolve.
+Draining flats towards lower adjacent terrain
+.................................................................................................................................
+Draining flats away from higher adjacent terrain
+.................
+Setting directions
+Iteration complete. Number of flats remaining: 450
+Draining flats towards lower adjacent terrain
+.........
+Draining flats away from higher adjacent terrain
+...
+Setting directions
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 8 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+Evaluating distances to outlet
+Creating links
+
+ Calculating watersheds
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+Assertion failed in file src/mpi/misc/utils.c at line 55: FALSE
+memcpy argument memory ranges overlap, dst_=0x7ffc08ffcc30 src_=0x7ffc08ffcc2c len_=8
+
+internal ABORT - process 0
+[unset]: write_line error; fd=-1 buf=:cmd=abort exitcode=1
+:
+system msg for write_line failure : Bad file descriptor
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+application called MPI_Abort(MPI_COMM_WORLD, 5) - process 0
+[unset]: write_line error; fd=-1 buf=:cmd=abort exitcode=5
+:
+system msg for write_line failure : Bad file descriptor
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 1 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.

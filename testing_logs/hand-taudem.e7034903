@@ -1,0 +1,3 @@
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.

@@ -67,7 +67,6 @@
 #
 #[ "${1:-}" = "--" ] && shift
 #
-#echo "verbose=$verbose, output_file='$output_file', Leftovers: $@"
 
 ## Option parsing from
 ##  https://stackoverflow.com/a/7948533
@@ -85,31 +84,31 @@ for arg; do
     case "$arg" in
         --job )           args+=( -j ) ;;
         --path_hand_pys ) args+=( -s ) ;;
+        --queue )         args+=( -q ) ;;
+        --start_time )    args+=( -t ) ;;
         *)                args+=( "$arg" ) ;;
     esac
 done
 
-printf 'args before update : '; printf '%q ' "$@"; echo
 set -- "${args[@]}"
-printf 'args before update : '; printf '%q ' "$@"; echo
 
 ARGS=""
 while [ $# -gt 0 ]; do
     unset OPTIND
     unset OPTARG
-    while getopts "j:s:" OPTION; do
+    while getopts "j:s:q:t:" OPTION; do
         : "$OPTION" "$OPTARG"
-        echo "optarg : $OPTARG"
         case $OPTION in
             j) JOBS="$OPTARG";;
             s) PATH_HAND_PYS="$OPTARG";;
+            q) QUEUE="$OPTARG";;
+            t) START_TIME="$OPTARG";;
         esac
     done
     shift $((OPTIND-1))
     ARGS="${ARGS} $1 "
     shift
 done
-echo ARGS=$ARGS
 
 #while true; do
 #    case "$1" in
@@ -120,29 +119,16 @@ echo ARGS=$ARGS
 #    esac
 #    shift
 #done
-echo JOBS="$JOBS"
-echo PATH_HAND_PYS="$PATH_HAND_PYS"
-echo args=$args
-echo arg=$arg
-echo at=$@
 
 RUN_COMMANDS() {
 
-    #echo "$1"
     
-    echo arg1=$1
     argument="$(readlink -f $1)"
     cd $(dirname -- "$argument")
 
     ## Properly initialise non-interactive shell
     eval "$(conda shell.bash hook)"
     
-    echo PATH_after_parallel=$PATH
-    echo LD_LIBRARY_PATH_after_parallel=$LD_LIBRARY_PATH
-    echo TEST_PATH_after_parallel=$TEST_PATH
-    echo PATH_HAND_PYS_after_parallel=$PATH_HAND_PYS
-    echo pwd=$(pwd)
-    echo ls=$(ls)
 
     if (
         [[ "${CONDA_PREFIX}" ]] && \
@@ -162,72 +148,249 @@ RUN_COMMANDS() {
             conda activate hand-libgdal
         fi
     fi
-    echo export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
 
-    echo $(pwd)
-    echo $(basename -- "$argument")
     
-    echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-    pitremove -z $(basename -- "$argument") -fel demfel.tif
-    dinfflowdir -fel demfel.tif -ang demang.tif -slp demslp.tif
-    d8flowdir -fel demfel.tif -p demp.tif -sd8 demsd8.tif
-    aread8 -p demp.tif -ad8 demad8.tif -nc
-    areadinf -ang demang.tif -sca demsca.tif -nc
+    if [ ! -f demfel.tif ]; then
+        pitremove -z $(basename -- "$argument") \
+                  -fel demfel.tif &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,pitremove" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demang.tif ] || \
+       [ ! -f demslp.tif ]; then
+        dinfflowdir -fel demfel.tif \
+                    -ang demang.tif \
+                    -slp demslp.tif &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,dinfflowdir" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demp.tif ] || \
+       [ ! -f demsd8.tif ]; then
+        d8flowdir -fel demfel.tif \
+                  -p demp.tif \
+                  -sd8 demsd8.tif &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,d8flowdir" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demad8.tif ]; then
+        aread8 -p demp.tif \
+               -ad8 demad8.tif \
+               -nc &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,aread8" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demsca.tif ]; then
+        areadinf -ang demang.tif \
+                 -sca demsca.tif \
+                 -nc &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,areadinf" hand-taudem.log
+        wait ${pid}
+    fi
     
     ## Skeleton
-    slopearea -slp demslp.tif -sca demsca.tif -sa demsa.tif
-    d8flowpathextremeup -p demp.tif -sa demsa.tif -ssa demssa.tif -nc
+    if [ ! -f demsa.tif ]; then
+        slopearea -slp demslp.tif \
+                  -sca demsca.tif \
+                  -sa demsa.tif &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,slopearea" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demssa.tif ]; then
+        d8flowpathextremeup -p demp.tif \
+                            -sa demsa.tif \
+                            -ssa demssa.tif \
+                            -nc &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,d8flowpathextremeup" hand-taudem.log
+        wait ${pid}
+    fi
     #python3 $PATH_HAND_PYS/hand-thresh.py --resolution demfel.tif --output demthresh.txt
     #threshold -ssa demssa.tif -src demsrc.tif -thresh $(cat demthresh.txt)
-    threshold -ssa demssa.tif -src demsrc.tif -thresh 500.0
+    if [ ! -f demsrc.tif ]; then
+        threshold -ssa demssa.tif \
+                  -src demsrc.tif \
+                  -thresh 500.0 &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,threshold" hand-taudem.log
+        wait ${pid}
+    fi
     
-    streamnet -fel demfel.tif -p demp.tif -ad8 demad8.tif -src demsrc.tif -ord demord.tif -tree demtree.dat -coord demcoord.dat -net demnet.shp -w demw.tif -sw
+    if [ ! -f demord.tif ] || \
+       [ ! -f demtree.dat ] || \
+       [ ! -f demcoord.dat ] || \
+       [ ! -f demnet.shp ] || \
+       [ ! -f demw.tif ]; then
+        streamnet -fel demfel.tif \
+                  -p demp.tif \
+                  -ad8 demad8.tif \
+                  -src demsrc.tif \
+                  -ord demord.tif \
+                  -tree demtree.dat \
+                  -coord demcoord.dat \
+                  -net demnet.shp \
+                  -w demw.tif \
+                  -sw &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,streamnet" hand-taudem.log
+        wait ${pid}
+    fi
     
-    connectdown -p demp.tif -ad8 demad8.tif -w demw.tif -o outlets.shp -od movedoutlets.shp
+    if [ ! -f outlets.shp ] || \
+       [ ! -f movedoutlets.shp ]; then
+        connectdown -p demp.tif \
+                    -ad8 demad8.tif \
+                    -w demw.tif \
+                    -o outlets.shp \
+                    -od movedoutlets.shp &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,connectdown" hand-taudem.log
+        wait ${pid}
+    fi
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
     conda activate hand-rasterio
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    python3 $PATH_HAND_PYS/hand-heads.py --network demnet.shp --output dangles.shp
-    python3 $PATH_HAND_PYS/hand-weights.py --shapefile dangles.shp --template demfel.tif --output demwg.tif
+    if [ ! -f dangles.shp ]; then
+        python3 $PATH_HAND_PYS/hand-heads.py --network demnet.shp \
+                                             --output dangles.shp &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,hand-heads" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demwg.tif ]; then
+        python3 $PATH_HAND_PYS/hand-weights.py --shapefile dangles.shp \
+                                               --template demfel.tif \
+                                               --output demwg.tif &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,hand-weights" hand-taudem.log
+        wait ${pid}
+    fi
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
     conda activate hand-libgdal
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    aread8 -p demp.tif -ad8 demssa.tif -o outlets.shp -wg demwg.tif -nc
+    if [ ! -f demssa.tif ]; then
+        aread8 -p demp.tif \
+               -ad8 demssa.tif \
+               -o outlets.shp \
+               -wg demwg.tif \
+               -nc &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,aread8" hand-taudem.log
+        wait ${pid}
+    fi
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
     conda activate hand-rasterio
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    python3 $PATH_HAND_PYS/hand-threshmin.py --resolution demfel.tif --output demthreshmin.txt
-    python3 $PATH_HAND_PYS/hand-threshmax.py --accumulation demssa.tif --output demthreshmax.txt
+    if [ ! -f demthreshmin.txt ]; then
+        python3 $PATH_HAND_PYS/hand-threshmin.py --resolution demfel.tif \
+                                                 --output demthreshmin.txt &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,hand-threshmin" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demthreshmax.txt ]; then
+        python3 $PATH_HAND_PYS/hand-threshmax.py --accumulation demssa.tif \
+                                                 --output demthreshmax.txt &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,hand-threshmax" hand-taudem.log
+        wait ${pid}
+    fi
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
     conda activate hand-libgdal
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    dropanalysis -ad8 demad8.tif -p demp.tif -fel demfel.tif -ssa demssa.tif -o outlets.shp -drp demdrp.txt -par $(cat demthreshmin.txt) $(cat demthreshmax.txt) 10 0
-    threshold -ssa demssa.tif -src demsrc.tif -thresh $(tail -n 1 demdrp.txt | awk '{print $NF}')
+    if [ ! -f demdrp.txt ]; then
+        dropanalysis -ad8 demad8.tif \
+                     -p demp.tif \
+                     -fel demfel.tif \
+                     -ssa demssa.tif \
+                     -o outlets.shp \
+                     -drp demdrp.txt \
+                     -par $(cat demthreshmin.txt) $(cat demthreshmax.txt) 10 0 &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,dropanalysis" hand-taudem.log
+        wait ${pid}
+    fi
+    if [ ! -f demsrc.tif ]; then
+        threshold -ssa demssa.tif \
+                  -src demsrc.tif \
+                  -thresh $(tail -n 1 demdrp.txt | awk '{print $NF}') &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,threshold" hand-taudem.log
+        wait ${pid}
+    fi
     
     filename=$(basename -- "$argument")
     filename="${filename%.*}"
 
-    dinfdistdown -ang demang.tif -fel demfel.tif -src demsrc.tif -wg demwg.tif -dd "${filename}dd.tif" -m ave v -nc
+    if [ ! -f ${filename}dd.tif ]; then
+        dinfdistdown -ang demang.tif \
+                     -fel demfel.tif \
+                     -src demsrc.tif \
+                     -wg demwg.tif \
+                     -dd "${filename}dd.tif" \
+                     -m ave v \
+                     -nc &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,dinfdistdown" hand-taudem.log
+        wait ${pid}
+    fi
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
     conda activate hand-rasterio
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    python3 $PATH_HAND_PYS/hand-vis.py --input "${filename}dd.tif" --binmethod 'lin' --raster "${filename}dd-vis.tif" --shapefile "${filename}dd-vis.shp" --geojson "${filename}dd-vis.json"
+    if [ ! -f ${filename}dd-vis.tif ] || \
+       [ ! -f ${filename}dd-vis.shp ] || \
+       [ ! -f ${filename}dd-vis.json ]; then
+        python3 $PATH_HAND_PYS/hand-vis.py --input "${filename}dd.tif" \
+                                           --binmethod 'lin' \
+                                           --raster "${filename}dd-vis.tif" \
+                                           --shapefile "${filename}dd-vis.shp" \
+                                           --geojson "${filename}dd-vis.json" &
+        pid=$!
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,False,hand-vis" hand-taudem.log
+        wait ${pid}
+        start_time=$(date -u +%s)
+        sed -i "2i${start_time}${pid},${pid},${start_time},${QUEUE},$((${start_time} - ${START_TIME})),False,True,hand-vis" hand-taudem.log
+    fi
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
@@ -239,28 +402,18 @@ export -f RUN_COMMANDS
 if [[ -z "${PATH_HAND_PYS}" ]]; then
     export PATH_HAND_PYS="$(pwd)"
 fi
-echo PATH_HAND_PYS_after_export=$PATH_HAND_PYS
 
 NPROC=$(($(grep -c ^processor /proc/cpuinfo) - 1))
 if [ $JOBS -gt $NPROC ]; then
     JOBS=$NPROC
 fi
 if [ $JOBS -eq 1 ]; then
-    echo ARGS_before_nonparallel="$ARGS"
     for argument in $ARGS; do
-         echo argument_nonparallel=$argument
 #        shift
         RUN_COMMANDS "$(readlink -f $argument)"
     done
 else
-    echo hand_taudem.sh-parallel_at=$@
-    echo hand_taudem.sh-parallel_arg=$arg
-    echo PATH_before_parallel=$PATH
-    echo LD_LIBRARY_PATH_before_parallel=$LD_LIBRARY_PATH
-    export TEST_PATH='test'
-    echo TEST_PATH_before_parallel=$TEST_PATH
     export PATH_HAND_PYS
-    echo ARGS_before_parallel="$ARGS"
     parallel --will-cite -j $JOBS -k --ungroup RUN_COMMANDS ::: $ARGS
 fi
 

@@ -1,0 +1,148 @@
+7039200
+JOBS=1
+PATH_HAND_IMG=/scratch/04950/dhl/HAND-TauDEM/hand_taudem_docker_latest.sif
+PATH_HAND_SH=/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.4/hand-taudem.sh
+PATH_HAND_PY=/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.4
+PATH_HAND_LOG=/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.4/../hand-taudem.git/regions/Texas/Travis-10m-25/hand-taudem.log
+QUEUE=normal
+START_TIME=1608666045
+singularity exec /scratch/04950/dhl/HAND-TauDEM/hand_taudem_docker_latest.sif bash --noprofile --norc -c /scratch/04950/dhl/HAND-TauDEM/scripts-3.1.4/hand-taudem.sh -j 1 --path_hand_pys /scratch/04950/dhl/HAND-TauDEM/scripts-3.1.4 --queue normal --start_time 1608666045  ../hand-taudem.git/regions/Texas/Travis-10m-25/Travis-DEM-10m-HUC120902050408buf.tif 
+JOBS=1
+PATH_HAND_PYS=/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.4
+QUEUE=normal
+START_TIME=1608666045
+PitRemove version 5.3.9
+Input file Travis-DEM-10m-HUC120902050408buf.tif has geographic coordinate system.
+Nodata value input to create partition from file: -340282306073709652508363335590014353408.000000
+Nodata value recast to float used in partition raster: -340282306073709652508363335590014353408.000000
+Processes: 1
+Header read time: 1.202217
+Data read time: 0.190920
+Compute time: 5.746034
+Write time: 0.437269
+Total time: 7.576440
+DinfFlowDir version 5.3.9
+Input file demfel.tif has geographic coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+Processors: 1
+Header read time: 0.190344
+Data read time: 0.287695
+Compute Slope time: 10.148394
+Write Slope time: 0.463763
+Resolve Flat time: 17.113975
+Write Flat time: 0.423976
+Total time: 28.628148
+D8FlowDir version 5.3.9
+Input file demfel.tif has geographic coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+Processors: 1
+Header read time: 0.180386
+Data read time: 0.289725
+Compute Slope time: 4.685902
+Write Slope time: 0.473697
+Resolve Flat time: 17.013742
+Write Flat time: 0.177850
+Total time: 22.821301
+AreaD8 version 5.3.9
+Input file demp.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Number of Processes: 1
+Read time: 0.316843
+Compute time: 5.189121
+Write time: 0.343290
+Total time: 5.849254
+AreaDinf version 5.3.9
+Input file demang.tif has geographic coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Processors: 1
+Read time: 0.463944
+Compute time: 16.825289
+Write time: 0.480468
+Total time: 17.769700
+SlopeArea version 5.3.9
+Input file demslp.tif has geographic coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Input file demsca.tif has geographic coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Compute time: 0.907573
+D8FlowPathExtremeUp version 5.3.9
+Input file demp.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demsa.tif has geographic coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Processors: 1
+Read time: 0.622955
+Compute time: 5.093478
+Write time: 0.479023
+Total time: 6.195456
+Threshold version 5.3.9
+Input file demssa.tif has geographic coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Compute time: 0.522310
+StreamNet version 5.3.9
+Input file demsrc.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demp.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demad8.tif has geographic coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Input file demfel.tif has geographic coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+demnet Processors: 1
+Read time: 1.549793
+Length compute time: 0.385344
+Link compute time: 0.423322
+Link write time: 0.235636
+Watershed compute time: 3.475271
+Write time: 0.845248
+Total time: 6.914614
+ConnectDown version 5.3.9
+Input file demw.tif has geographic coordinate system.
+Nodata value input to create partition from file: -2147483647.000000
+Nodata value recast to int32_t used in partition raster: -2147483647
+Input file demp.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demad8.tif has geographic coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+DropAnalysis version 5.3.9
+Input file demssa.tif has geographic coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Input file demp.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demad8.tif has geographic coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Error Opening OGR Data Source .
+Error opening shapefile. Exiting 
+DinfDistDown -v version 5.3.9
+Input file demang.tif has geographic coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Input file demfel.tif has geographic coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+Input file demsrc.tif has geographic coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Processors: 1
+Read time: 1.084493
+Compute time: 16.601695
+Write time: 0.461186
+Total time: 18.147373

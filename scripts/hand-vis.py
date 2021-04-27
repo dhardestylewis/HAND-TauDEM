@@ -52,7 +52,8 @@ def digi(nodata,raster):
             dtype = np.float
         )
         return(bins)
-    
+
+    nsamples = 21
     if args.binmethod:
         binning = args.binmethod.split(" ")
         if binning[0] == 'lin':
@@ -60,16 +61,31 @@ def digi(nodata,raster):
                 binning[0] = np.linspace
                 bins = np_space()
             else:
-                bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
+                bins = np.linspace(
+                    0.,
+                    1./ftpm*float(nsamples-1),
+                    num = nsamples,
+                    dtype = np.float
+                )
         elif binning[0] == 'log':
             if len(binning)>1:    
                 binning[0] = np.logspace
                 bins = np_space()
             else:
-                bins = np.logspace(np.log10(1./3.28084),np.log10(20./3.28084),num=20,dtype=np.float)
+                bins = np.logspace(
+                    np.log10(1./ftpm),
+                    np.log10(float(nsamples-1)/ftpm),
+                    num = nsamples-1,
+                    dtype = np.float
+                )
             bins = np.insert(bins,0,[0.])
     else:
-        bins = np.linspace(0.,1./3.28084*20.,num=21,dtype=np.float)
+        bins = np.linspace(
+            0.,
+            1./ftpm*float(nsamples-1),
+            num = nsamples,
+            dtype = np.float
+        )
     bins = np.append(bins,float(nodata))
 
     digi = np.digitize(raster.filled(fill_value=nodata),bins,right=True)
@@ -78,9 +94,9 @@ def digi(nodata,raster):
         if len(binning)>1:
             digi[digi==int(binning[3])] = nodata
         else:
-            digi[digi==21] = nodata
+            digi[digi==nsamples] = nodata
     else:
-        digi[digi==21] = nodata
+        digi[digi==nsamples] = nodata
 
     return(bins, digi)
 
@@ -127,8 +143,8 @@ def output_vector(src_crs,dst_crs,digi,transformation,bins):
         for i,pixel_value in enumerate(uniq_val_subset):
             polygons = [shape(geom) for geom,value in shapes if value==pixel_value]
             multipolygon = mapping(MultiPolygon(polygons))
-            bin_left = bins[pixel_value-di]*3.28084
-            bin_right = bins[pixel_value]*3.28084
+            bin_left = bins[pixel_value-di]*ftpm
+            bin_right = bins[pixel_value]*ftpm
             if args.shapefile:
                 vec_write(vec['ESRI Shapefile'])
             if args.geojson:
@@ -185,13 +201,17 @@ def output_vector(src_crs,dst_crs,digi,transformation,bins):
 def main():
 
     global args
+    global ftpm
 
     args = argparser()
+    ftpm = 3.28084
 
     if args.crs:
         dst_crs = 'EPSG:'+str(args.crs)
     else:
         dst_crs = 'EPSG:3857'
+
+    nodata = np.iinfo(np.uint16).max
 
     with rasterio.open(args.input) as src:
         transformation, width, height = calculate_default_transform(
@@ -209,14 +229,15 @@ def main():
             destination,
             src_transform=src.transform,
             src_crs=src.crs,
+            src_nodata=src.nodata,
             dst_transform=transformation,
             dst_crs=dst_crs,
-            resampling=Resampling.nearest)
+            dst_nodata=nodata,
+            resampling=Resampling.nearest
+        )
         profile = src.profile
         src_crs = src.crs.to_string()
         raster = ma.array(destination,mask=(destination==src.nodata))
-
-    nodata = np.iinfo(np.uint16).max
 
     binned, digitised = digi(nodata,raster)
 

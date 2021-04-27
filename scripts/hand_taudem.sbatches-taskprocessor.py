@@ -50,12 +50,33 @@ def argparser():
         type=str,
         help="path of the HAND-TauDEM bash script"
     )
-    ## path of the directory containing the HAND-TauDEM Python files
+    ## path of the HAND-TauDEM log file
     parser.add_argument(
-        "-p",
-        "--path_hand_py",
+        "-l",
+        "--path_hand_log",
         type=str,
-        help="path of the directory containing the HAND-TauDEM Python files"
+        help="path of the HAND-TauDEM log file"
+    )
+    ## path of the HAND-TauDEM commands script
+    parser.add_argument(
+        "-c",
+        "--path_hand_cmds",
+        type=str,
+        help="path of the HAND-TauDEM commands script"
+    )
+    ## path of the HAND-TauDEM command outputs list
+    parser.add_argument(
+        "-o",
+        "--path_hand_cmd_outputs",
+        type=str,
+        help="path of the HAND-TauDEM command outputs list"
+    )
+    ## path of the HAND-TauDEM commands configuration file
+    parser.add_argument(
+        "-r",
+        "--path_hand_rc",
+        type=str,
+        help="path of the HAND-TauDEM commands configuration file"
     )
     ## minutes between scheduler checks
     parser.add_argument(
@@ -83,8 +104,14 @@ def argparser():
         parser.error('-i --path_hand_img HAND Singularity image file needed')
     if not args.path_hand_sh:
         parser.error('-s --path_hand_sh HAND Bash script file not specified')
-    if not args.path_hand_py:
-        parser.error('-p --path_hand_py HAND Python files parent directory')
+    if not args.path_hand_log:
+        parser.error('-l --path_hand_log HAND log file not specified')
+    if not args.path_hand_cmds:
+        parser.error('-c --path_hand_cmds HAND Bash commands file not given')
+    if not args.path_hand_cmd_outputs:
+        parser.error('-o --path_hand_cmd_outputs Command outputs not given')
+    if not args.path_hand_rc:
+        parser.error('-r --path_hand_rc HAND configuration file not specified')
     if not args.pos:
         parser.error('Input DEMs not specified')
 
@@ -166,13 +193,15 @@ class TaskProcessor(Thread):
                 " -N 1"   +
                 " -n 48 " +
                 args.path_hand_sbatch +
-                    " -j "              + str(args.jobs) +
-                    " --path_hand_img " + args.path_hand_img +
-                    " --path_hand_sh "  + args.path_hand_sh +
-                    " --path_hand_py "  + args.path_hand_py +
-                    " --path_hand_log " + self.logfile.__str__() +
-                    " --queue "         + self.queue +
-                    " --start_time "    + str(self.start_time) +
+                    " -j "                      + str(args.jobs) +
+                    " --path_hand_img "         + args.path_hand_img +
+                    " --path_hand_sh "          + args.path_hand_sh +
+                    " --path_hand_log "         + self.logfile.__str__() +
+                    " --path_hand_cmds "        + args.path_hand_cmds +
+                    " --path_hand_cmd_outputs " + args.path_hand_cmd_outputs +
+                    " --path_hand_rc "          + args.path_hand_rc +
+                    " --queue "                 + self.queue +
+                    " --start_time "            + str(self.start_time) +
                 " " + self.p
         )
 
@@ -216,6 +245,15 @@ class TaskProcessor(Thread):
         self.logcsv = pd.read_csv(
             self.logfile,
             index_col = 'index',
+#            usecols = [
+#                'pid',
+#                'start_time',
+#                'queue',
+#                'elapsed_time',
+#                'error_long_queue_timeout',
+#                'complete',
+#                'last_cmd'
+#            ],
             dtype = {
                 'pid' : int,
                 'start_time' : int,
@@ -266,7 +304,9 @@ class TaskProcessor(Thread):
 
             self.p = self.tasks.popleft()
 
-            self.logfile = Path(self.p).parent.absolute().joinpath('hand-taudem.log')
+            ## TODO Make specifying log file name optional
+            #self.logfile = Path(self.p).parent.absolute().joinpath('hand-taudem.log')
+            self.logfile = Path(self.p).parent.absolute().joinpath(args.path_hand_log)
             if not self.logfile.is_file():
                 self.logcsv = pd.DataFrame(
                     index = [int()],
@@ -277,7 +317,8 @@ class TaskProcessor(Thread):
                         'elapsed_time' : [args.minutes * 60 + 1],
                         'error_long_queue_timeout' : [False],
                         'complete' : [False],
-                        'last_cmd' : ['']
+                        'last_cmd' : ['touch'],
+                        'exit_code' : [0]
                     }
                 )
                 self.logcsv.index.names = ['index']
@@ -398,6 +439,7 @@ class TaskProcessor(Thread):
                 else:
                     print('BREAK at line 389')
                     print(self.bashCmd)
+                    print(self.output)
                     print(self.error)
                     break
 
@@ -443,18 +485,29 @@ class TaskProcessor(Thread):
             self._update_running_tasks()
             actual_tasks = self._running_tasks.copy()
 
+            print("actual_tasks")
+            print(actual_tasks)
             for p in actual_tasks:
+
+                key = list(p.keys())[0]
+                print("task")
+                print(p)
 
                 self.bashCmd = (
                     "squeue" +
-                        " -j " + str(p) +
+                        " -j " + str(key) +
                         ' -o "%.18i %.9P %.8j %.8u %.2t %.10M %.6D"'
                 )
                 self._subprocess_Popen()
+                print("self.output")
+                print(self.output)
+                print("self.error")
+                print(self.error)
                 #if list(p.keys())[0].poll() is not None:  ## process has finished
                 if self.error != b'':  ## process has finished
 
-                    key = list(p.keys())[0]
+                    print("key")
+                    print(key)
                     
                     if p[key]['queue'] == 'long':
                         self._running_tasks_long.remove(p)
@@ -478,10 +531,10 @@ class TaskProcessor(Thread):
 
                 else:
 
-                    print('BREAK at line 498')
+                    print('CONTINUE at line 498')
                     print(self.bashCmd)
                     print(self.error)
-                    break
+                    continue
 
             time.sleep(float(args.minutes * 60))
 

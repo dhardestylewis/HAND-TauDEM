@@ -43,51 +43,24 @@
 #SBATCH -t 48:00:00          # Run time (hh:mm:ss) - 2 hours
 #SBATCH -A PT2050-DataX
 
-echo ${SLURM_JOB_ID}
-
 ##------------------------------------------------------------------------------
 ##------- You normally should not need to edit anything below this point -------
 ##------------------------------------------------------------------------------
 
-#TEMP=$(getopt \
-#    -o j: \
-#    --long job:,\
-#           path_hand_img:,\
-#           path_hand_sh:,\
-#           path_hand_py: \
-#    -- "$@")
-#
-#if [ $? != 0 ]; then echo "Terminating..." >&2 ; exit 1 ; fi
-#
-#eval set -- "$TEMP"
-#
-#JOBS=1
-#PATH_HAND_IMG=
-#PATH_HAND_SH=
-#PATH_HAND_PY=
-#while true; do
-#    case "$1" in
-#        -- ) shift ; break ;;
-#        -j | --job ) JOBS="$2"; shift ;;
-#        --path_hand_img ) PATH_HAND_IMG="$2"; shift ;;
-#        --path_hand_sh ) PATH_HAND_SH="$2"; shift ;;
-#        --path_hand_py ) PATH_HAND_PY="$2"; shift ;;
-#        * ) ARG="$@"; shift ; break ;;
-#    esac
-#    shift
-#done
 
 args=( )
 for arg; do
     case "$arg" in
-        --job )           args+=( -j ) ;;
-        --path_hand_img ) args+=( -i ) ;;
-        --path_hand_sh )  args+=( -s ) ;;
-        --path_hand_py )  args+=( -p ) ;;
-        --path_hand_log ) args+=( -l ) ;;
-        --queue )         args+=( -q ) ;;
-        --start_time )    args+=( -t ) ;;
-        *)                args+=( "$arg" ) ;;
+        --job )                   args+=( -j ) ;;
+        --path_hand_img )         args+=( -i ) ;;
+        --path_hand_sh )          args+=( -s ) ;;
+        --path_hand_log )         args+=( -l ) ;;
+        --path_hand_cmds )        args+=( -c ) ;;
+        --path_hand_cmd_outputs ) args+=( -o ) ;;
+        --path_hand_rc )          args+=( -r ) ;;
+        --queue )                 args+=( -q ) ;;
+        --start_time )            args+=( -t ) ;;
+        *)                        args+=( "$arg" ) ;;
     esac
 done
 
@@ -97,14 +70,16 @@ ARGS=""
 while [ $# -gt 0 ]; do
     unset OPTIND
     unset OPTARG
-    while getopts "j:i:s:p:l:q:t:" OPTION; do
+    while getopts "j:i:s:l:c:o:r:q:t:" OPTION; do
         : "$OPTION" "$OPTARG"
         case $OPTION in
             j) JOBS="$OPTARG";;
-            i) PATH_HAND_IMG="$OPTARG";;
-            s) PATH_HAND_SH="$OPTARG";;
-            p) PATH_HAND_PY="$OPTARG";;
+            i) PATH_HAND_IMG="$(readlink -f $OPTARG)";;
+            s) PATH_HAND_SH="$(readlink -f $OPTARG)";;
             l) PATH_HAND_LOG="$OPTARG";;
+            c) PATH_HAND_CMDS="$(readlink -f $OPTARG)";;
+            o) PATH_HAND_CMD_OUTPUTS="$(readlink -f $OPTARG)";;
+            r) PATH_HAND_RC="$(readlink -f $OPTARG)";;
             q) QUEUE="$OPTARG";;
             t) START_TIME="$OPTARG";;
         esac
@@ -120,7 +95,6 @@ module load tacc-singularity
 singularity exec ${PATH_HAND_IMG} \
             bash --noprofile \
                  --norc \
-                 -c "${PATH_HAND_SH} -j $JOBS --path_hand_pys ${PATH_HAND_PY} --queue ${QUEUE} --start_time ${START_TIME} $ARGS"
-#singularity exec --cleanenv ${PATH_HAND_IMG} bash --noprofile --norc
+                 -c "${PATH_HAND_SH} -j $JOBS --queue ${QUEUE} --start_time ${START_TIME} --path_hand_rc ${PATH_HAND_RC} --path_hand_cmds ${PATH_HAND_CMDS} --path_hand_cmd_outputs ${PATH_HAND_CMD_OUTPUTS} --path_hand_log ${PATH_HAND_LOG} $ARGS"
 
 

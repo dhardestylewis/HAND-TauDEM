@@ -43,14 +43,17 @@
 args=( )
 for arg; do
     case "$arg" in
-        --path_hand_taskproc ) args+=( -t ) ;;
-        --job )                args+=( -j ) ;;
-        --path_hand_sbatch )   args+=( -b ) ;;
-        --path_hand_img )      args+=( -i ) ;;
-        --path_hand_sh )       args+=( -s ) ;;
-        --path_hand_py )       args+=( -p ) ;;
-        --minutes )            args+=( -m ) ;;
-        *)                     args+=( "$arg" ) ;;
+        --path_hand_taskproc )    args+=( -t ) ;;
+        --job )                   args+=( -j ) ;;
+        --path_hand_sbatch )      args+=( -b ) ;;
+        --path_hand_img )         args+=( -i ) ;;
+        --path_hand_sh )          args+=( -s ) ;;
+        --path_hand_log )         args+=( -l ) ;;
+        --path_hand_cmds )        args+=( -c ) ;;
+        --path_hand_cmd_outputs ) args+=( -o ) ;;
+        --path_hand_rc )          args+=( -r ) ;;
+        --minutes )               args+=( -m ) ;;
+        *)                        args+=( "$arg" ) ;;
     esac
 done
 
@@ -60,7 +63,7 @@ ARGS=""
 while [ $# -gt 0 ]; do
     unset OPTIND
     unset OPTARG
-    while getopts "t:j:b:i:s:p:m:" OPTION; do
+    while getopts "t:j:b:i:s:l:c:o:r:m:" OPTION; do
         : "$OPTION" "$OPTARG"
         case $OPTION in
             t) PATH_HAND_TASKPROC="$(readlink -f $OPTARG)";;
@@ -68,7 +71,10 @@ while [ $# -gt 0 ]; do
             b) PATH_HAND_SBATCH="$(readlink -f $OPTARG)";;
             i) PATH_HAND_IMG="$(readlink -f $OPTARG)";;
             s) PATH_HAND_SH="$(readlink -f $OPTARG)";;
-            p) PATH_HAND_PY="$(readlink -f $OPTARG)";;
+            l) PATH_HAND_LOG="$OPTARG";;
+            c) PATH_HAND_CMDS="$(readlink -f $OPTARG)";;
+            o) PATH_HAND_CMD_OUTPUTS="$(readlink -f $OPTARG)";;
+            r) PATH_HAND_RC="$(readlink -f $OPTARG)";;
             m) MINUTES="$OPTARG";;
         esac
     done
@@ -82,7 +88,10 @@ python3 ${PATH_HAND_TASKPROC} --path_hand_sbatch ${PATH_HAND_SBATCH} \
                               -j ${JOBS} \
                               --path_hand_img ${PATH_HAND_IMG} \
                               --path_hand_sh ${PATH_HAND_SH} \
-                              --path_hand_py ${PATH_HAND_PY} \
+                              --path_hand_log ${PATH_HAND_LOG} \
+                              --path_hand_cmds ${PATH_HAND_CMDS} \
+                              --path_hand_cmd_outputs ${PATH_HAND_CMD_OUTPUTS} \
+                              --path_hand_rc ${PATH_HAND_RC} \
                               --minutes ${MINUTES} \
                               $ARGS
 

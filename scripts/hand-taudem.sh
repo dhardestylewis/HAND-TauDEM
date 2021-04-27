@@ -69,37 +69,56 @@
 #
 #echo "verbose=$verbose, output_file='$output_file', Leftovers: $@"
 
-TEMP=$(getopt \
-    -o vdj: \
-    --long verbose,debug,job:,path_hand_py:,debugfile:,outputfile: \
-    -- "$@")
+## Option parsing from
+##  https://stackoverflow.com/a/7948533
+#TEMP=$(getopt \
+#    -o j: \
+#    --long job:,path_hand_py: \
+#    -- "$@")
+#
+#if [ $? != 0 ]; then echo "Terminating..." >&2 ; exit 1 ; fi
+#
+#eval set -- "$TEMP"
+#
+#JOBS=1
+#PATH_HAND_PY=
 
-if [ $? != 0 ]; then echo "Terminating..." >&2 ; exit 1 ; fi
-
-eval set -- "$TEMP"
-
-VERBOSE=false
-DEBUG=false
-JOBS=1
-PATH_HAND_PY=
-DEBUGFILE=
-OUTPUTFILE=
-while true; do
-    echo "$TEMP"
-    case "$1" in
-        -- ) shift ; break ;;
-        -v | --verbose ) VERBOSE=true; shift ;;
-        -d | --debug ) DEBUG=true; shift ;;
-        -j | --job ) JOBS="$2"; shift ;;
-        --path_hand_py ) PATH_HAND_PY="$2"; shift ;;
-        --debugfile ) DEBUGFILE="$2"; shift ;;
-        --outputfile ) OUTPUTFILE="$2"; shift ;;
-        * ) ARG="$@"; shift ; break ;;
+args=( )
+for arg; do
+    case "$arg" in
+        --job )          args+=( -j ) ;;
+        --path_hand_py ) args+=( -p ) ;;
+        *)               args+=( "$arg" ) ;;
     esac
-    shift
 done
+
+printf 'args before update : '; printf '%q ' "$@"; echo
+set -- "${args[@]}"
+printf 'args before update : '; printf '%q ' "$@"; echo
+
+while getopts "j:p:" OPTION; do
+    : "$OPTION" "$OPTARG"
+    echo "optarg : $OPTARG"
+    case $OPTION in
+        j) JOBS="$OPTARG";;
+        p) PATH_HAND_PY="$OPTARG";;
+    esac
+done
+
+#while true; do
+#    case "$1" in
+#        -j | --job ) JOBS="$2"; shift ;;
+#        --path_hand_py ) PATH_HAND_PY="$2"; shift ;;
+#        -- ) shift ; break ;;
+#        * ) ARG="$@"; break ;; #shift ; break ;;
+#    esac
+#    shift
+#done
 echo JOBS="$JOBS"
-echo "$@"
+echo PATH_HAND_PY="$PATH_HAND_PY"
+echo args=$args
+echo arg=$arg
+echo at=$@
 
 RUN_COMMANDS() {
 
@@ -214,6 +233,7 @@ if [ $JOBS -eq 1 ]; then
         RUN_COMMANDS "$arg"
     done
 else
-    parallel --will-cite -j $JOBS -k --ungroup RUN_COMMANDS ::: "$@"
+    echo hand_taudem.sh-parallel_at=$@
+    parallel --will-cite -j $JOBS -k --ungroup RUN_COMMANDS ::: "$arg"
 fi
 

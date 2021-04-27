@@ -8,7 +8,7 @@
 ## Copyright: Copyright 2020, Daniel Hardesty Lewis
 ## Credits: Daniel Hardesty Lewis
 ## License: GPLv3
-## Version: 3.1.1
+## Version: 3.1.2
 ## Maintainer: Daniel Hardesty Lewis
 ## Email: dhl@tacc.utexas.edu
 ## Status: Production
@@ -34,13 +34,13 @@
 ## https://portal.tacc.utexas.edu/user-guides/stampede2
 ##-----------------------------------------------------------------------------
 ##
-#SBATCH -J hand-taudem        # Job name
-#SBATCH -o hand-taudem.out    # Name of stdout output file (%j expands to jobId)
-#SBATCH -e hand-taudem.err    # Name of stderr error file (%j expands to jobId)
-#SBATCH -p skx-dev               # Queue name
-#SBATCH -N 1                  # Total number of nodes requested (68 cores/node)
+#SBATCH -J hand-taudem.j%j    # Job name
+#SBATCH -o hand-taudem.o%j    # Name of stdout output file (%j expands to jobId)
+#SBATCH -e hand-taudem.e%j    # Name of stderr error file (%j expands to jobId)
+#SBATCH -p skx-dev            # Queue name
+#SBATCH -N 1                  # Total number of nodes requested (48 cores/node)
 #SBATCH -n 48                 # Total number of mpi tasks requested
-#SBATCH -t 02:00:00          # Run time (hh:mm:ss) - 120 hours
+#SBATCH -t 02:00:00           # Run time (hh:mm:ss) - 2 hours
 #SBATCH -A PT2050-DataX
 
 ##------------------------------------------------------------------------------
@@ -79,11 +79,11 @@
 args=( )
 for arg; do
     case "$arg" in
-        --job )          args+=( -j ) ;;
+        --job )           args+=( -j ) ;;
         --path_hand_img ) args+=( -i ) ;;
-        --path_hand_sh ) args+=( -s ) ;;
-        --path_hand_py ) args+=( -p ) ;;
-        *)               args+=( "$arg" ) ;;
+        --path_hand_sh )  args+=( -s ) ;;
+        --path_hand_py )  args+=( -p ) ;;
+        *)                args+=( "$arg" ) ;;
     esac
 done
 
@@ -106,8 +106,12 @@ echo jobs=$JOBS
 echo path_hand_img=$PATH_HAND_IMG
 echo path_hand_sh=$PATH_HAND_SH
 echo path_hand_py=$PATH_HAND_PY
-echo arg=$@
+echo args=$args
+echo arg=$arg
+echo at=$@
 
 module load tacc-singularity
 
-singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $@"
+echo singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $arg"
+#singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $arg"
+singularity exec ${PATH_HAND_IMG} bash

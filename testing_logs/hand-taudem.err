@@ -1,4 +1,0 @@
-[33mWARNING:[0m skipping mount of sysfs: no such file or directory
-[33mWARNING:[0m passwd file doesn't exist in container, not updating
-[33mWARNING:[0m group file doesn't exist in container, not updating
-[31mFATAL:  [0m shell /bin/sh doesn't exist in container

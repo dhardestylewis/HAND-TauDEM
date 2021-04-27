@@ -37,10 +37,10 @@
 #SBATCH -J hand-taudem.j%j    # Job name
 #SBATCH -o hand-taudem.o%j    # Name of stdout output file (%j expands to jobId)
 #SBATCH -e hand-taudem.e%j    # Name of stderr error file (%j expands to jobId)
-#SBATCH -p skx-dev            # Queue name
+#SBATCH -p long               # Queue name
 #SBATCH -N 1                  # Total number of nodes requested (48 cores/node)
-#SBATCH -n 48                 # Total number of mpi tasks requested
-#SBATCH -t 02:00:00           # Run time (hh:mm:ss) - 2 hours
+#SBATCH -n 68                 # Total number of mpi tasks requested
+#SBATCH -t 120:00:00           # Run time (hh:mm:ss) - 2 hours
 #SBATCH -A PT2050-DataX
 
 ##------------------------------------------------------------------------------
@@ -89,18 +89,27 @@ done
 
 printf 'args before update : '; printf '%q ' "$@"; echo
 set -- "${args[@]}"
-printf 'args before update : '; printf '%q ' "$@"; echo
+printf 'args after update : '; printf '%q ' "$@"; echo
 
-while getopts "j:i:s:p:" OPTION; do
-    : "$OPTION" "$OPTARG"
-    echo "optarg : $OPTARG"
-    case $OPTION in
-        j) JOBS="$OPTARG";;
-        i) PATH_HAND_IMG="$OPTARG";;
-        s) PATH_HAND_SH="$OPTARG";;
-        p) PATH_HAND_PY="$OPTARG";;
-    esac
+ARGS=""
+while [ $# -gt 0 ]; do
+    unset OPTIND
+    unset OPTARG
+    while getopts "j:i:s:p:" OPTION; do
+        : "$OPTION" "$OPTARG"
+        echo "optarg : $OPTARG"
+        case $OPTION in
+            j) JOBS="$OPTARG";;
+            i) PATH_HAND_IMG="$(readlink -f $OPTARG)";;
+            s) PATH_HAND_SH="$(readlink -f $OPTARG)";;
+            p) PATH_HAND_PY="$(readlink -f $OPTARG)";;
+        esac
+    done
+    shift $((OPTIND-1))
+    ARGS="${ARGS} $1 "
+    shift
 done
+echo ARGS=$ARGS
 
 echo jobs=$JOBS
 echo path_hand_img=$PATH_HAND_IMG
@@ -112,6 +121,7 @@ echo at=$@
 
 module load tacc-singularity
 
-echo singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $arg"
-#singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $arg"
-singularity exec ${PATH_HAND_IMG} bash
+echo singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $ARGS"
+singularity exec ${PATH_HAND_IMG} bash --noprofile --norc -c "${PATH_HAND_SH} -j $JOBS --path_hand_pys ${PATH_HAND_PY} $ARGS"
+echo singularity exec ${PATH_HAND_IMG} bash
+#singularity exec --cleanenv ${PATH_HAND_IMG} bash --noprofile --norc

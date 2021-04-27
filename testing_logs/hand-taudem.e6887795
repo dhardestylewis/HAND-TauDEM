@@ -1,0 +1,45 @@
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- -
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- p
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- a
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- t
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- h
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- _
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- h
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- a
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- n
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- d
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- _
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- p
+/scratch/04950/dhl/HAND-TauDEM/scripts-3.1.2/hand-taudem.sh: illegal option -- y
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/opt/apps/xalt/xalt/lib64/libxalt_init.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+This run may take on the order of 7 minutes to complete.
+This estimate is very approximate. 
+Run time is highly uncertain as it depends on the complexity of the input data 
+and speed and memory of the computer. This estimate is based on our testing on 
+a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+slurmstepd: error: *** JOB 6887795 ON c506-061 CANCELLED AT 2020-11-24T22:58:49 ***
+parallel: SIGTERM received. No new jobs will be started.
+parallel: Waiting for these 1 jobs to finish. Send SIGTERM again to stop now.
+parallel: RUN_COMMANDS /scratch/projects/tnris/dhl-flood-modelling/TWDB-Basin-Colorado/TWDB-Basin-Colorado-120902050409/Elevation.tif

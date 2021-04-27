@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Usage: hand-3.0.0.sh 
+## Usage: hand-taudem.sh 
 
 ## Workflow that returns height-above-nearest-drainage (HAND) from source data
 
@@ -8,7 +8,7 @@
 ## Copyright: Copyright 2020, Daniel Hardesty Lewis
 ## Credits: Daniel Hardesty Lewis
 ## License: GPLv3
-## Version: 3.0.0
+## Version: 3.1.1
 ## Maintainer: Daniel Hardesty Lewis
 ## Email: dhl@tacc.utexas.edu
 ## Status: Production
@@ -71,7 +71,7 @@
 
 TEMP=$(getopt \
     -o vdj: \
-    --long verbose,debug,job:,debugfile:,outputfile: \
+    --long verbose,debug,job:,path_hand_py:,debugfile:,outputfile: \
     -- "$@")
 
 if [ $? != 0 ]; then echo "Terminating..." >&2 ; exit 1 ; fi
@@ -80,9 +80,10 @@ eval set -- "$TEMP"
 
 VERBOSE=false
 DEBUG=false
+JOBS=1
+PATH_HAND_PY=
 DEBUGFILE=
 OUTPUTFILE=
-JOBS=1
 while true; do
     echo "$TEMP"
     case "$1" in
@@ -90,6 +91,7 @@ while true; do
         -v | --verbose ) VERBOSE=true; shift ;;
         -d | --debug ) DEBUG=true; shift ;;
         -j | --job ) JOBS="$2"; shift ;;
+        --path_hand_py ) PATH_HAND_PY="$2"; shift ;;
         --debugfile ) DEBUGFILE="$2"; shift ;;
         --outputfile ) OUTPUTFILE="$2"; shift ;;
         * ) ARG="$@"; shift ; break ;;
@@ -140,7 +142,7 @@ RUN_COMMANDS() {
     ## Skeleton
     slopearea -slp demslp.tif -sca demsca.tif -sa demsa.tif
     d8flowpathextremeup -p demp.tif -sa demsa.tif -ssa demssa.tif -nc
-    #python3 $PYTHON_HAND/hand-thresh.py --resolution demfel.tif --output demthresh.txt
+    #python3 $PATH_HAND_PY/hand-thresh.py --resolution demfel.tif --output demthresh.txt
     #threshold -ssa demssa.tif -src demsrc.tif -thresh $(cat demthresh.txt)
     threshold -ssa demssa.tif -src demsrc.tif -thresh 500.0
     
@@ -153,8 +155,8 @@ RUN_COMMANDS() {
     conda activate hand-rasterio
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    python3 $PYTHON_HAND/hand-heads.py --network demnet.shp --output dangles.shp
-    python3 $PYTHON_HAND/hand-weights.py --shapefile dangles.shp --template demfel.tif --output demwg.tif
+    python3 $PATH_HAND_PY/hand-heads.py --network demnet.shp --output dangles.shp
+    python3 $PATH_HAND_PY/hand-weights.py --shapefile dangles.shp --template demfel.tif --output demwg.tif
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
@@ -168,8 +170,8 @@ RUN_COMMANDS() {
     conda activate hand-rasterio
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    python3 $PYTHON_HAND/hand-threshmin.py --resolution demfel.tif --output demthreshmin.txt
-    python3 $PYTHON_HAND/hand-threshmax.py --accumulation demssa.tif --output demthreshmax.txt
+    python3 $PATH_HAND_PY/hand-threshmin.py --resolution demfel.tif --output demthreshmin.txt
+    python3 $PATH_HAND_PY/hand-threshmax.py --accumulation demssa.tif --output demthreshmax.txt
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
@@ -189,7 +191,7 @@ RUN_COMMANDS() {
     conda activate hand-rasterio
     export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}"
     
-    python3 $PYTHON_HAND/hand-vis.py --input "${filename}dd.tif" --binmethod 'lin' --raster "${filename}dd-vis.tif" --shapefile "${filename}dd-vis.shp" --geojson "${filename}dd-vis.json"
+    python3 $PATH_HAND_PY/hand-vis.py --input "${filename}dd.tif" --binmethod 'lin' --raster "${filename}dd-vis.tif" --shapefile "${filename}dd-vis.shp" --geojson "${filename}dd-vis.json"
     
     export LD_LIBRARY_PATH=$(echo "${LD_LIBRARY_PATH}" | sed -E 's|^'"${CONDA_PREFIX}"'/lib:||')
     conda deactivate
@@ -198,8 +200,8 @@ RUN_COMMANDS() {
 
 export -f RUN_COMMANDS
 
-if [[ -z "${PYTHON_HAND}" ]]; then
-    export PYTHON_HAND='.'
+if [[ -z "${PATH_HAND_PY}" ]]; then
+    export PATH_HAND_PY='.'
 fi
 
 NPROC=$(($(grep -c ^processor /proc/cpuinfo) - 1))

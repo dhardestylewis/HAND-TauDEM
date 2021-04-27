@@ -1,0 +1,10 @@
+ -- 'debug,' 'job:,' 'path_hand_img:,' 'path_hand_sh:,' 'path_hand_py:,' 'debugfile:,' 'outputfile:'
+JOBS=1
+debug, job:, path_hand_img:, path_hand_sh:, path_hand_py:, debugfile:, outputfile:
+job execution at: Thu Nov 12 21:00:36 CST 2020
+running on node c506-062
+memory limit set to 186612414 kilobytes
+set wayness to 
+HERE
+/bin/bash --norc
+job execution finished at: Thu Nov 12 21:00:38 CST 2020

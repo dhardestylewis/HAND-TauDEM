@@ -1,0 +1,113 @@
+#!/bin/bash
+##
+##------------------------------------------------------------------------------
+## Usage: hand-taudem.sh
+##
+## Workflow that returns height-above-nearest-drainage (HAND) from source data  
+## Author: Daniel Hardesty Lewis
+## Copyright: Copyright 2020, Daniel Hardesty Lewis
+## Credits: Daniel Hardesty Lewis
+## License: GPLv3
+## Version: 3.1.1
+## Maintainer: Daniel Hardesty Lewis
+## Email: dhl@tacc.utexas.edu
+## Status: Production
+##
+## This Stampede-2 job script is designed to create a HAND-TauDEM session on 
+## KNL long nodes through the SLURM batch system. Once the job
+## is scheduled, check the output of your job (which by default is
+## stored in your home directory in a file named hand-taudem.out)
+##
+## Aspects of this scripts were incorporated from `job.vnc`
+##  located at /share/doc/slurm/job.vnc on stampede2.tacc.utexas.edu
+##
+## Note: you can fine tune the SLURM submission variables below as
+## needed.  Typical items to change are the runtime limit, location of
+## the job output, and the allocation project to submit against (it is
+## commented out for now, but is required if you have multiple
+## allocations).  
+##
+## To submit the job, issue: "sbatch hand-taudem.sbatch.sh" 
+##
+## For more information, please consult the User Guide at: 
+##
+## https://portal.tacc.utexas.edu/user-guides/stampede2
+##-----------------------------------------------------------------------------
+##
+#SBATCH -J hand-taudem        # Job name
+#SBATCH -o hand-taudem.out    # Name of stdout output file (%j expands to jobId)
+#SBATCH -e hand-taudem.err    # Name of stderr error file (%j expands to jobId)
+#SBATCH -p skx-dev               # Queue name
+#SBATCH -N 1                  # Total number of nodes requested (68 cores/node)
+#SBATCH -n 48                 # Total number of mpi tasks requested
+#SBATCH -t 02:00:00          # Run time (hh:mm:ss) - 120 hours
+#SBATCH -A PT2050-DataX
+
+##------------------------------------------------------------------------------
+##------- You normally should not need to edit anything below this point -------
+##------------------------------------------------------------------------------
+
+#TEMP=$(getopt \
+#    -o j: \
+#    --long job:,\
+#           path_hand_img:,\
+#           path_hand_sh:,\
+#           path_hand_py: \
+#    -- "$@")
+#
+#if [ $? != 0 ]; then echo "Terminating..." >&2 ; exit 1 ; fi
+#
+#eval set -- "$TEMP"
+#
+#JOBS=1
+#PATH_HAND_IMG=
+#PATH_HAND_SH=
+#PATH_HAND_PY=
+#while true; do
+#    echo "$TEMP"
+#    case "$1" in
+#        -- ) shift ; break ;;
+#        -j | --job ) JOBS="$2"; shift ;;
+#        --path_hand_img ) PATH_HAND_IMG="$2"; shift ;;
+#        --path_hand_sh ) PATH_HAND_SH="$2"; shift ;;
+#        --path_hand_py ) PATH_HAND_PY="$2"; shift ;;
+#        * ) ARG="$@"; shift ; break ;;
+#    esac
+#    shift
+#done
+
+args=( )
+for arg; do
+    case "$arg" in
+        --job )          args+=( -j ) ;;
+        --path_hand_img ) args+=( -i ) ;;
+        --path_hand_sh ) args+=( -s ) ;;
+        --path_hand_py ) args+=( -p ) ;;
+        *)               args+=( "$arg" ) ;;
+    esac
+done
+
+printf 'args before update : '; printf '%q ' "$@"; echo
+set -- "${args[@]}"
+printf 'args before update : '; printf '%q ' "$@"; echo
+
+while getopts "j:i:s:p:" OPTION; do
+    : "$OPTION" "$OPTARG"
+    echo "optarg : $OPTARG"
+    case $OPTION in
+        j) JOBS="$OPTARG";;
+        i) PATH_HAND_IMG="$OPTARG";;
+        s) PATH_HAND_SH="$OPTARG";;
+        p) PATH_HAND_PY="$OPTARG";;
+    esac
+done
+
+echo jobs=$JOBS
+echo path_hand_img=$PATH_HAND_IMG
+echo path_hand_sh=$PATH_HAND_SH
+echo path_hand_py=$PATH_HAND_PY
+echo arg=$@
+
+module load tacc-singularity
+
+singularity exec ${PATH_HAND_IMG} "${PATH_HAND_SH} -j $JOBS --path_hand_py ${PATH_HAND_PY} $@"

@@ -1,0 +1,150 @@
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+D8FlowDir version 5.3.9
+Input file demfel.tif has projected coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+Processors: 67
+Header read time: 2.195425
+Data read time: 1.711822
+Compute Slope time: 2.109096
+Write Slope time: 11.921651
+Resolve Flat time: 2055.190108
+Write Flat time: 5.413523
+Total time: 2078.541624
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+AreaD8 version 5.3.9
+Input file demp.tif has projected coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Number of Processes: 67
+Read time: 2.281813
+Compute time: 4.210805
+Write time: 0.290484
+Total time: 6.783102
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+AreaDinf version 5.3.9
+Input file demang.tif has projected coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Processors: 67
+Read time: 2.885236
+Compute time: 23.966531
+Write time: 14.996801
+Total time: 41.848567
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+SlopeArea version 5.3.9
+Input file demslp.tif has projected coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Input file demsca.tif has projected coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Compute time: 1.248343
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+D8FlowPathExtremeUp version 5.3.9
+Input file demp.tif has projected coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demsa.tif has projected coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Processors: 67
+Read time: 0.362170
+Compute time: 4.568746
+Write time: 15.972384
+Total time: 20.903301
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+Threshold version 5.3.9
+Input file demssa.tif has projected coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Compute time: 0.334716
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+StreamNet version 5.3.9
+Input file demsrc.tif has projected coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demp.tif has projected coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demad8.tif has projected coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Input file demfel.tif has projected coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+demnet Processors: 67
+Read time: 2.798486
+Length compute time: 0.915329
+Link compute time: 1.581061
+Link write time: 11.434982
+Watershed compute time: 3.254537
+Write time: 6.961044
+Total time: 26.945439
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+DropAnalysis version 5.3.9
+Input file demssa.tif has projected coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Input file demp.tif has projected coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Input file demad8.tif has projected coordinate system.
+Nodata value input to create partition from file: -1.000000
+Nodata value recast to float used in partition raster: -1.000000
+Warning: Projection of Outlet feature and Raster data may be different.
+Projection of Raster datasource WGS 84 / UTM zone 14N.
+Projection of Outlet feature WGS_1984_UTM_Zone_14N.
+Input file demfel.tif has projected coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+Threshold DrainDen NoFirstOrd NoHighOrd MeanDFirstOrd MeanDHighOrd StdDevFirstOrd StdDevHighOrd Tval
+4.999944 inf 203439 47035 0.772536 1.600408 0.959410 2.270595 -123.533028
+24.372952 inf 48372 10650 0.971051 2.322138 1.373530 3.213069 -68.365959
+118.809494 inf 12709 2630 1.207880 3.283397 1.870841 4.303374 -39.310173
+579.154114 inf 3861 771 1.429750 4.548342 2.389364 5.551107 -25.146534
+2823.170898 inf 1264 231 1.996375 6.293416 3.547799 6.953366 -14.116767
+13761.957031 inf 356 69 3.220849 7.502639 5.371720 7.991939 -5.543311
+67084.656250 inf 84 18 5.560799 11.685444 6.682277 9.396835 -3.267764
+327013.906250 inf 19 7 7.613106 14.045142 6.382059 13.911220 -1.637460
+1594076.750000 inf 2 0 7.071999  -  7.496750  -   - 
+7770558.500000 inf 0 0  -   -   -   -   - 
+327013.906250  Value for optimum that drop analysis selected - see output file for details.
+Processes: 67
+Read time: 4.607043
+Compute time: 13.055475
+Total time: 17.662518
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 7392447 
+TACC:  Starting parallel tasks... 
+DinfDistDown -v version 5.3.9
+Input file demang.tif has projected coordinate system.
+Nodata value input to create partition from file: -340282346638528859811704183484516925440.000000
+Nodata value recast to float used in partition raster: -340282346638528859811704183484516925440.000000
+Input file demfel.tif has projected coordinate system.
+Nodata value input to create partition from file: -300000000549775575777803994281145270272.000000
+Nodata value recast to float used in partition raster: -300000000549775575777803994281145270272.000000
+Input file demsrc.tif has projected coordinate system.
+Nodata value input to create partition from file: -32768.000000
+Nodata value recast to int16_t used in partition raster: -32768
+Processors: 67
+Read time: 2.727453
+Compute time: 25.624637
+Write time: 14.398251
+Total time: 42.750341
+TACC:  Shutdown complete. Exiting. 

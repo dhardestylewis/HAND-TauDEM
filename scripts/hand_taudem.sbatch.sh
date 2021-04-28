@@ -40,8 +40,9 @@
 #SBATCH -p skx-normal         # Queue name
 #SBATCH -N 1                  # Total number of nodes requested (48 cores/node)
 #SBATCH -n 48                 # Total number of mpi tasks requested
-#SBATCH -t 48:00:00          # Run time (hh:mm:ss) - 2 hours
+#SBATCH -t 48:00:00           # Run time (hh:mm:ss) - 2 hours
 #SBATCH -A PT2050-DataX
+#SBATCH --reservation PT2050
 
 ##------------------------------------------------------------------------------
 ##------- You normally should not need to edit anything below this point -------
@@ -92,9 +93,9 @@ done
 
 module load tacc-singularity
 
-singularity exec ${PATH_HAND_IMG} \
-            bash --noprofile \
-                 --norc \
-                 -c "${PATH_HAND_SH} -j $JOBS --queue ${QUEUE} --start_time ${START_TIME} --path_hand_rc ${PATH_HAND_RC} --path_hand_cmds ${PATH_HAND_CMDS} --path_hand_cmd_outputs ${PATH_HAND_CMD_OUTPUTS} --path_hand_log ${PATH_HAND_LOG} $ARGS"
+#singularity exec ${PATH_HAND_IMG} \
+bash --noprofile \
+     --norc \
+     -c "${PATH_HAND_SH} -j $JOBS --queue ${QUEUE} --start_time ${START_TIME} --path_hand_rc ${PATH_HAND_RC} --path_hand_cmds ${PATH_HAND_CMDS} --path_hand_cmd_outputs ${PATH_HAND_CMD_OUTPUTS} --path_hand_log ${PATH_HAND_LOG} $ARGS"
 
 

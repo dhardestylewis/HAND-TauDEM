@@ -6,6 +6,7 @@ aread8 -p demp.tif -ad8 demad8.tif -nc &
 areadinf -ang demang.tif -sca demsca.tif -nc &
 slopearea -slp demslp.tif -sca demsca.tif -sa demsa.tif &
 d8flowpathextremeup -p demp.tif -sa demsa.tif -ssa demssa.tif -nc &
+#python3 $PATH_HAND_PYS/hand-thresh.py --resolution demfel.tif --output demthresh.txt
 threshold -ssa demssa.tif -src demsrc.tif -thresh 500.0 & #-thresh $(cat demthresh.txt)
 streamnet -fel demfel.tif -p demp.tif -ad8 demad8.tif -src demsrc.tif -ord demord.tif -tree demtree.dat -coord demcoord.dat -net demnet.shp -w demw.tif -sw &
 CONDA_ACTIVATE 'hand-rasterio'

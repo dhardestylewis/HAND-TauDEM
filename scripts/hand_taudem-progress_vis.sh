@@ -33,7 +33,7 @@ while [ $# -gt 0 ]; do
 done
 
 
-cd $PATH_WD
+cd $PATH_CD
 
 LOGS=$(find . | grep $PATH_LOG)
 

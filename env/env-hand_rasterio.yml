@@ -1,7 +1,0 @@
-name: hand-rasterio
-channels:
-  - defaults
-dependencies:
-  - rasterio
-  - geopandas
-  - numpy

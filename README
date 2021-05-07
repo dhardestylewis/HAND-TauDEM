@@ -1,3 +1,6 @@
+# [Height Above Nearest Drainage (HAND)](https://doi.org/10.5194/nhess-19-2405-2019) using the [TauDEM library](https://hydrology.usu.edu/taudem/taudem5/) and some Python glue scripts
+
+
 Command list
 ---------
 hand-2.1.0.sh      Workflow of all provided Python scripts as Bash script
